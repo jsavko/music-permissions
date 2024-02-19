@@ -143,7 +143,6 @@ PlaylistDirectory.prototype._getEntryContextOptions = function() {
 				if(game.user.isGM) return true;
 				const li = header.closest(".directory-item");
 				const playlist = game.playlists.get(li.data("document-id"));
-				console.log(document)
 				const sheet = playlist.sheet;
 				return playlist.description == game.userId;
 			};
@@ -288,18 +287,12 @@ PlaylistDirectory.setupFolders = function(folders, documents) {
 Hooks.once("init", function (){
 	//Register our module settings w/ core
 	Settings.init();
-	//PlaylistDirectory.entryPartial = "modules/music-permissions/templates/sidebar/playlist-partial.html";
-
 });
 
-Hooks.once("setup", async function () { 
-	PlaylistDirectory.entryPartial = "modules/music-permissions/templates/sidebar/playlist-partial.html";
-});
 
 Hooks.once("ready", async function () {
 	//Register our socket callback & default handlers.
 	SocketHandler.init();
-	PlaylistDirectory.entryPartial = "modules/music-permissions/templates/sidebar/playlist-partial.html";
 
 	//Enable local sound controls if configured so.
 	//Disabled for now.
@@ -314,22 +307,17 @@ Hooks.once("ready", async function () {
 	let playlist_dir_template_path = "templates/sidebar/playlists-directory.html"
 	game.socket.emit("template", playlist_dir_template_path, resp => {
 		if ( resp.error ) new Error(resp.error);
-
 		let html = resp.html.replace("@root.user.isGM", "sound.canControl");
-
 		const compiled = Handlebars.compile(html);
 		Handlebars.registerPartial(playlist_dir_template_path, compiled);
 		_templateCache[playlist_dir_template_path] = compiled;
 		ui["playlists"].render(true)
      	});
-
-	let playlist_partial_template_path = "templates/sidebar/playlist-partial.html"
+	
+	let playlist_partial_template_path = "templates/sidebar/partials/playlist-partial.html"
 	game.socket.emit("template", playlist_partial_template_path, resp => {
 		if ( resp.error ) new Error(resp.error);
-
-		let html = resp.html.replace("#if @root.user.isGM", "#if this.canEdit");
-		html = html.replace("#unless @root.user.isGM", "#unless this.canControl");
-
+		let html = resp.html.replace("#if @root.user.isGM", "#if @root.canCreateEntry");
 		const compiled = Handlebars.compile(html);
 		Handlebars.registerPartial(playlist_partial_template_path, compiled);
 		_templateCache[playlist_partial_template_path] = compiled;
