@@ -6,7 +6,9 @@ import { remoteAction } from "./network/util.js"
 //Override to support permissions for viewing playlists
 Object.defineProperty(Playlist.prototype, "visible", {
 	get: function myProperty(){
-		return this.permission > 0;
+		if (game.isGM) return CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+		if ( this.isEmbedded ) return this.parent.permission;
+		return this.getUserLevel(game.user);
 	}
 });
 
@@ -109,7 +111,8 @@ PlaylistDirectory.prototype.activateListeners = function (html) {
 	      }
 	});
 
-	html.find(".create-folder").click(ev => this._onCreateFolder(ev));
+	html.find(".create-folder").click(this._onCreateFolder.bind(this));
+	html.find(".create-entry").click(this._onCreateEntry.bind(this));
 }
 
 //Fix playlist directory removing folder ownership config option.
@@ -299,7 +302,8 @@ Hooks.once("ready", async function () {
 	//LocalSound._init()
 	
 	Hooks.on("updatePlaylist", function(playlist, change, info, userId){
-		if('permission' in change) ui["playlists"].render(true);
+		console.log(change)
+		if('ownership' in change) ui["playlists"].render(true);
 	});
 	
 
@@ -312,6 +316,7 @@ Hooks.once("ready", async function () {
 		Handlebars.registerPartial(playlist_dir_template_path, compiled);
 		_templateCache[playlist_dir_template_path] = compiled;
 		ui["playlists"].render(true)
+		console.log('Music Permissions | Retrieved and compiled template ' + playlist_dir_template_path)
      	});
 	
 	let playlist_partial_template_path = "templates/sidebar/partials/playlist-partial.html"
@@ -322,5 +327,6 @@ Hooks.once("ready", async function () {
 		Handlebars.registerPartial(playlist_partial_template_path, compiled);
 		_templateCache[playlist_partial_template_path] = compiled;
 		ui["playlists"].render(true)
+		console.log('Music Permissions | Retrieved and compiled template ' + playlist_partial_template_path)
      	});
 });
