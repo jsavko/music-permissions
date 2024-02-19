@@ -292,6 +292,10 @@ Hooks.once("init", function (){
 	Settings.init();
 });
 
+Hooks.on("updatePlaylist", function(playlist, change, info, userId){
+	if('ownership' in change) ui["playlists"].render(true);
+});
+
 
 Hooks.once("ready", async function () {
 	//Register our socket callback & default handlers.
@@ -300,12 +304,6 @@ Hooks.once("ready", async function () {
 	//Enable local sound controls if configured so.
 	//Disabled for now.
 	//LocalSound._init()
-	
-	Hooks.on("updatePlaylist", function(playlist, change, info, userId){
-		console.log(change)
-		if('ownership' in change) ui["playlists"].render(true);
-	});
-	
 
 	//We're going to change templates for generating the HTML for the playlist directory
 	let playlist_dir_template_path = "templates/sidebar/playlists-directory.html"
