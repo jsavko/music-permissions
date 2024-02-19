@@ -1,0 +1,29 @@
+{
+    "name": "music-permissions",
+    "title": "Music Permissions",
+    "description": "Provides configurable permissions for playing, editing, and creating playlists.",
+    "version": "3.0.0",
+    "library": false,
+    "minimumCoreVersion": "10",
+    "compatibleCoreVersion": "10.288",
+    "authors": [
+        {
+            "name": "Matthew Whitlock",
+            "url": "https://github.com/matthew-whitlock",
+            "discord": "KnightlyDuckling#2313"
+        }
+    ],
+    "esmodules": [
+        "scripts/music-permissions.js"
+    ],
+    "url": "https://github.com/Matthew-Whitlock/FoundryVTT-music-permissions",
+    "manifest": "https://github.com/Matthew-Whitlock/FoundryVTT-music-permissions/releases/latest/download/module.json",
+    "download": "https://github.com/Matthew-Whitlock/FoundryVTT-music-permissions/releases/download/v3.0.0/module.zip",
+    "socket": true,
+    "media": [
+        {
+            "type": "icon",
+            "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+        }
+    ]
+}
