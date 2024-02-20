@@ -320,7 +320,7 @@ Hooks.once("ready", async function () {
 	let playlist_partial_template_path = "templates/sidebar/partials/playlist-partial.html"
 	game.socket.emit("template", playlist_partial_template_path, resp => {
 		if ( resp.error ) new Error(resp.error);
-		let html = resp.html.replace("#if @root.user.isGM", "#if @root.canCreateEntry");
+		let html = resp.html.replaceAll("@root.user.isGM", "@root.canCreateEntry");
 		const compiled = Handlebars.compile(html);
 		Handlebars.registerPartial(playlist_partial_template_path, compiled);
 		_templateCache[playlist_partial_template_path] = compiled;
