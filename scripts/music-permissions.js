@@ -6,7 +6,7 @@ import { remoteAction } from "./network/util.js"
 //Override to support permissions for viewing playlists
 Object.defineProperty(Playlist.prototype, "visible", {
 	get: function myProperty(){
-		if (game.isGM) return CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
+		if (game.user.isGM) return CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER;
 		if ( this.isEmbedded ) return this.parent.permission;
 		return this.getUserLevel(game.user);
 	}
